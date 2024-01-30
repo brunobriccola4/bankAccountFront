@@ -23,12 +23,9 @@ const accountPage = () => {
   };
 
   const dispatch = useAppDispatch();
-  const { state, id} = useAppSelector((state) => state.accountReducer);
-  console.log("state", state);
 
   const handleSubmit = async (e: FormEvent) => {
     try {
-      console.log("accountData", accountData);
       e.preventDefault();
       const response = await dispatch(createAccount(accountData));
       let accountId = response.payload?.id

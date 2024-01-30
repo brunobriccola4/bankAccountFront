@@ -21,13 +21,11 @@ const accountIdPage = ({ params }: { params: { accountId: string } }) => {
   const handleClick = () => {
     router.push('/transaction')
   };
-
-  {
-    state === "loading" && <p>Loading Page...</p>;
-  }
+  
 
   return (
     <section className="py-6 bg-blueGray-50 h-96 gap-4 flex flex-col">
+      {state === "loading" && <p>Loading Page...</p>}
       <div className="w-full lg:w-8/12 px-4 mx-auto  bg-slate-50 rounded-md">
         <h2 className=" text-3xl font-extrabold leading-none tracking-tight text-sky-700 md:text-4xl">
           {" "}
