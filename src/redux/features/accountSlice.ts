@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { error } from "console";
 
 export type Transactions = {
-  _id: string;
+  _id?: string;
   account_id: string;
   transactionAmount: number;
   transaction_type: string;
@@ -20,7 +19,7 @@ export type AccountState = {
   name?: string;
   account_number?: number;
   initialAmount?: number;
-  id?: number;
+  id?: string;
   state: "booting" | "idle" | "loading" | "failed" | "ok";
   balance?: Balance,
   error?: string
@@ -66,6 +65,22 @@ export const fetchAccountById = createAsyncThunk(
   }
 );
 
+export const newTransaction = createAsyncThunk(
+  "transactions", async(transaction: Transactions) => {
+    try {
+      if (!transaction) {
+        throw new Error("No hay datos para realizar la transaccion");
+      }
+      const response = await axios.post('http://localhost:3001/transactions', transaction);
+      console.log('response',response)
+      return response?.data
+    } catch (error) {
+      console.log('error', error)
+      throw new Error("No se pudo realizar la transaccion")
+    }
+  }
+)
+
 export const accountSlice = createSlice({
   name: "account",
   initialState,
@@ -102,6 +117,16 @@ export const accountSlice = createSlice({
         initialAmount: action.payload.data.account.initialAmount
       });
     });
+    builder.addCase(newTransaction.pending, (state) => {
+      state.state = 'loading'
+    })
+    builder.addCase(newTransaction.rejected, (state, action) => {
+      state.state = 'failed',
+      state.error = action.error.message
+    })
+    builder.addCase(newTransaction.fulfilled, (state, action) => {
+      state.state = 'ok'
+    })
   },
 });
 
