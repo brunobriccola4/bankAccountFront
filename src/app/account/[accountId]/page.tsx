@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 
 const accountIdPage = ({ params }: { params: { accountId: string } }) => {
   const { account_number, name, balance, initialAmount, state } =
-    useAppSelector((state) => state.accountReducer);
+    useAppSelector((state) => state.account);
     const router = useRouter()
 
   useEffect(() => {

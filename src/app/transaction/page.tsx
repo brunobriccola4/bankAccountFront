@@ -5,7 +5,7 @@ import { newTransaction } from "@/redux/features/accountSlice";
 import { useRouter } from "next/navigation";
 
 const TransactionPage = () => {
-  const { id } = useAppSelector((state) => state.accountReducer);
+  const { id } = useAppSelector((state) => state.account);
   const initialAccountId = id ?? "";
   const [transaction, setTransaction] = useState({
     account_id: initialAccountId,
