@@ -3,6 +3,7 @@ import { createAccount } from "@/redux/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { FormEvent, useState } from "react";
 import { AccountState } from "@/redux/features/accountSlice";
+import { useRouter } from 'next/navigation';
 
 const accountPage = () => {
   const [accountData, setAccountData] = useState<AccountState>({
@@ -11,6 +12,7 @@ const accountPage = () => {
     initialAmount: 0,
     state: "loading",
   });
+  const router = useRouter()
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = ev.target;
@@ -21,13 +23,21 @@ const accountPage = () => {
   };
 
   const dispatch = useAppDispatch();
-  const { state, id } = useAppSelector((state) => state.accountReducer);
+  const { state, id} = useAppSelector((state) => state.accountReducer);
   console.log("state", state);
 
-  const handleSubmit = (e: FormEvent) => {
-    console.log("accountData", accountData);
-    e.preventDefault();
-    dispatch(createAccount(accountData));
+  const handleSubmit = async (e: FormEvent) => {
+    try {
+      console.log("accountData", accountData);
+      e.preventDefault();
+      const response = await dispatch(createAccount(accountData));
+      let accountId = response.payload?.id
+      if(response.payload.id) {
+        router.push(`/account/${accountId}`)
+      }
+    } catch (error) {
+      console.error('no se pudo crear el usuario')      
+    }
   };
 
   return (

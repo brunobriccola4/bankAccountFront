@@ -4,7 +4,7 @@ import axios from "axios";
 export type Transactions = {
   _id: string;
   account_id: string;
-  total: number;
+  transactionAmount: number;
   transaction_type: string;
 };
 
@@ -82,7 +82,8 @@ export const accountSlice = createSlice({
         name: data?.account.name,
         id: action.payload.data?.account?._id,
         account_number: action.payload.data.account.account_number ,
-        balance: data?.balance,
+        balance: action.payload.data.balance,
+        initialAmount: action.payload.data.account.initialAmount
       });
     });
   },
