@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { error } from "console";
 
 export type Transactions = {
   _id: string;
   account_id: string;
-  total: number;
+  transactionAmount: number;
   transaction_type: string;
 };
 
@@ -21,7 +22,8 @@ export type AccountState = {
   initialAmount?: number;
   id?: number;
   state: "booting" | "idle" | "loading" | "failed" | "ok";
-  balance?: Balance
+  balance?: Balance,
+  error?: string
 };
 
 const initialState: AccountState = {
@@ -69,12 +71,26 @@ export const accountSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(createAccount.pending, (state) => {
+      state.state = 'loading'
+    })
     builder.addCase(createAccount.fulfilled, (state, action) => {
       return (state = {
         state: action.payload?.status,
         id: action.payload?.id,
       });
     });
+    builder.addCase(createAccount.rejected, (state, action) => { 
+      state.state = 'failed',
+      state.error = action.error.message
+    })
+    builder.addCase(fetchAccountById.pending, (state, action) => {
+      state.state = 'loading'
+    });
+    builder.addCase(fetchAccountById.rejected, (state, action) => {
+      state.state = 'failed',
+      state.error = action.error.message
+    })
     builder.addCase(fetchAccountById.fulfilled, (state, action) => {
       const { data } = action.payload
       return (state = {
@@ -82,12 +98,12 @@ export const accountSlice = createSlice({
         name: data?.account.name,
         id: action.payload.data?.account?._id,
         account_number: action.payload.data.account.account_number ,
-        balance: data?.balance,
+        balance: action.payload.data.balance,
+        initialAmount: action.payload.data.account.initialAmount
       });
     });
   },
 });
 
-// export const { create } = accountSlice.actions;
 
 export default accountSlice.reducer;
