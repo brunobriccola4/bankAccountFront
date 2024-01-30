@@ -15,8 +15,6 @@ const TransactionPage = () => {
   const router = useRouter()
   const dispatch = useAppDispatch();
 
-  console.log("id", id);
-
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = ev.target;
     setTransaction({
@@ -28,7 +26,6 @@ const TransactionPage = () => {
   const handleSubmit = async (e: FormEvent) => {
     try {
       e.preventDefault();
-      console.log("transaction", transaction);
       const response = await dispatch(newTransaction(transaction));
       console.log('response', response)
       if(response.type == "transactions/fulfilled") {
@@ -40,9 +37,9 @@ const TransactionPage = () => {
   };
 
   return (
-    <section className="flex justify-center items-center">
+    <section className="flex justify-center items-center bg-blue-200 pt-4 h-screen">
       <div className="w-full max-w-xs flex justify-center flex-col">
-        <h1 className="flex justify-center text-cyan-600 font-semibold pb-2">
+        <h1 className="flex justify-center text-sky-700 font-semibold pb-2 text-2xl">
           Nueva Transaccion
         </h1>
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -55,7 +52,6 @@ const TransactionPage = () => {
               id="account_number"
               type="text"
               placeholder="Ingrese el numero de cuenta"
-              // defaultValue={id}
               onChange={(ev) => handleChange(ev)}
               value={id}
               name={"account_number"}

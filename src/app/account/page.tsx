@@ -38,9 +38,9 @@ const accountPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-blue-200">
       <div className="w-full max-w-xs">
-        <h1 className="flex justify-center text-cyan-600 font-semibold pb-2">
+        <h1 className="flex justify-center text-sky-700 font-semibold pb-2 text-2xl">
           {" "}
           Nueva cuenta de Banco
         </h1>
