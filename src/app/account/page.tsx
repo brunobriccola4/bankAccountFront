@@ -2,8 +2,10 @@
 import { createAccount } from "@/redux/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { FormEvent, useState } from "react";
-import { AccountState } from "@/redux/features/accountSlice";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { Title } from "@/component/Title";
+import { Button } from "@/component/Button";
+import { AccountState } from "@/redux/interface";
 
 const accountPage = () => {
   const [accountData, setAccountData] = useState<AccountState>({
@@ -12,7 +14,8 @@ const accountPage = () => {
     initialAmount: 0,
     state: "loading",
   });
-  const router = useRouter()
+  
+  const router = useRouter();
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = ev.target;
@@ -28,22 +31,20 @@ const accountPage = () => {
     try {
       e.preventDefault();
       const response = await dispatch(createAccount(accountData));
-      let accountId = response.payload?.id
-      if(response.payload.id) {
-        router.push(`/account/${accountId}`)
+      let accountId = response.payload?.id;
+      if (response.payload.id) {
+        router.push(`/account/${accountId}`);
       }
     } catch (error) {
-      console.error('no se pudo crear el usuario')      
+      console.error("no se pudo crear el usuario");
     }
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="w-full max-w-xs">
-        <h1 className="flex justify-center text-cyan-600 font-semibold pb-2">
-          {" "}
-          Nueva cuenta de Banco
-        </h1>
+        <Title title="Nueva cuenta de Banco" />
+
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -87,13 +88,7 @@ const accountPage = () => {
             />
           </div>
           <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-              type="button"
-              onClick={handleSubmit}
-            >
-              Crear cuenta
-            </button>
+            <Button text="Crear Cuenta" onClick={handleSubmit} />
           </div>
         </form>
       </div>
