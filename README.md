@@ -37,3 +37,14 @@ Ejecutar el proyecto
   npm run dev
 ```
 
+## Vistas | Pages
+
+¡Bienvenido a mi proyecto Account Bank! Aquí hay algunas capturas de pantalla:
+
+![Crear Cuenta](public/images/nuevaCuenta.png)
+
+![Detalle Cuenta](public/images/detalleCuenta.png)
+
+![Transferir](public/images/transferir.png)
+
+
